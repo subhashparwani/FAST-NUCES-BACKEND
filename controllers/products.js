@@ -1,17 +1,26 @@
-const user = async (req, res) => {
-  res.status(200).json({ msg: "i am user." });
+const productById = (req, res) => {
+  res.send("Hello");
 };
 
-const allUsers = async (req, res) => {
-  res.status(200).json({ msg: "I am allUsers" });
+const allProducts = (req, res) => {
+  res.send("Hello");
 };
 
-const userByEmail = async (req, res) => {
-  res.status(200).json({ msg: "I am userByEmail" });
+const createProduct = (req, res) => {
+  res.send("Hello");
+};
+const updateProduct = (req, res) => {
+  res.send("Hello");
 };
 
-const userById = async (req, res) => {
-  res.status(200).json({ msg: "I am userById" });
+const deleteProduct = (req, res) => {
+  res.send("Hello");
 };
 
-module.exports = { user, allUsers, userByEmail, userById };
+module.exports = {
+  createProduct,
+  productById,
+  allProducts,
+  deleteProduct,
+  updateProduct,
+};
