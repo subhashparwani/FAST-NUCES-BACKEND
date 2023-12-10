@@ -8,6 +8,8 @@ const {
   userById,
   signUp,
   logIn,
+  updateProfile,
+  deleteUser,
 } = require("../controllers/users");
 
 router.get("/", user);
@@ -18,8 +20,8 @@ router.get("/user-by-id/:id", userById);
 router.post("/login", logIn);
 router.post("/signup", signUp);
 
-// router.put("/update-profile", updateProfile);
+router.put("/update-profile", updateProfile);
 
-// router.delete("/delete-user", deleteUser);
+router.delete("/delete-user", deleteUser);
 
 module.exports = router;

@@ -9,14 +9,6 @@ const product_route = require("./routers/products");
 //MIDDLEWARE
 app.use(express.json());
 
-app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError && "body" in err) {
-    res.status(400).json({ message: "Bad request: Invalid JSON" });
-  } else {
-    next();
-  }
-});
-
 //API ROUTES
 app.use("/api/users", user_route);
 app.use("/api/products", product_route);

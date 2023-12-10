@@ -69,15 +69,81 @@ const user = async (req, res) => {
 };
 
 const allUsers = async (req, res) => {
-  res.status(200).json({ msg: "I am allUsers" });
+  try {
+    const db = await connect(process.env.MONGO_URL);
+    const allUsers = await UserSchema.find();
+    res.status(201).json({ users: allUsers });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 };
 
 const userByEmail = async (req, res) => {
-  res.status(200).json({ msg: "I am userByEmail" });
+  const { email } = req.query;
+
+  try {
+    const db = await connect(process.env.MONGO_URL);
+    const user = await UserSchema.findOne({ email: email });
+    res.json({ user });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 const userById = async (req, res) => {
-  res.status(200).json({ msg: "I am userById" });
+  const { id } = req.params;
+
+  try {
+    const db = await connect(process.env.MONGO_URL);
+    const user = await UserSchema.findOne({ _id: id });
+    res.json({ user });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
-module.exports = { user, allUsers, userByEmail, userById, signUp, logIn };
+const updateProfile = async (req, res) => {
+  const { email, username, profile_pic, gender } = req.body;
+
+  try {
+    const filter = { email };
+    const update = { username, profile_pic, gender };
+    await connect(process.env.MONGO_URL);
+    const doc = await UserSchema.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+
+    res.json({ user: doc, message: "Profile Updated Sucessfully" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  // res.json({ email: req.body.email })
+
+  try {
+    await connect(process.env.MONGO_URL);
+    const deleteUser = await UserSchema.findOneAndDelete({
+      email: req.body.email,
+    });
+    const updatedusers = await UserSchema.find();
+    res.json({
+      message: "Successfully Deleted",
+      users: updatedusers,
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  user,
+  allUsers,
+  userByEmail,
+  userById,
+  deleteUser,
+  updateProfile,
+  signUp,
+  logIn,
+};
