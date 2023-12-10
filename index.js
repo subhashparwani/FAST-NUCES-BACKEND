@@ -3,11 +3,23 @@ const app = express();
 require("dotenv").config();
 const port = process.env.SERVER_PORT;
 
-const users_route = require("./routers/users");
-const products_route = require("./routers/products");
+const user_route = require("./routers/users");
+const product_route = require("./routers/products");
 
-app.use("/api/users", users_route);
-app.use("/api/products", products_route);
+//MIDDLEWARE
+app.use(express.json());
+
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && "body" in err) {
+    res.status(400).json({ message: "Bad request: Invalid JSON" });
+  } else {
+    next();
+  }
+});
+
+//API ROUTES
+app.use("/api/users", user_route);
+app.use("/api/products", product_route);
 
 app.get("/", (req, res) => {
   res.send("Hello World! subhash chandar products");
